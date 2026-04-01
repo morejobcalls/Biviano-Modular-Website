@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biviano Modular Builders — Option 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --coal: #111110;
+    --coal-mid: #1C1C1A;
+    --coal-light: #2A2A27;
+    --stone: #8C7B6B;
+    --stone-light: #BBA898;
+    --stone-pale: #E8DDD5;
+    --sand: #F0E8DF;
+    --cream: #FAF7F4;
+    --blue: #4A90C4;
+    --blue-mid: #3A7EBF;
+    --blue-pale: rgba(74,144,196,0.12);
+    --white: #FFFFFF;
+    --rule-dark: rgba(255,255,255,0.07);
+    --rule-light: rgba(0,0,0,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--coal);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 56px;
+    height: 72px;
+    background: rgba(17,17,16,0.92);
+    border-bottom: 1px solid var(--rule-dark);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+  }
+  .nav-crest-wrap {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(74,144,196,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-crest {
+    width: 28px; height: 28px;
+  }
+  .nav-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    color: var(--white);
+    line-height: 1;
+  }
+  .nav-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 0.28em;
+    color: var(--blue);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 36px;
+    align-items: center;
+  }
+  .nav-links a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--coal);
+    background: var(--blue);
+    padding: 10px 28px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+  .nav-cta:hover { background: var(--stone-light); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding-top: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-img {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .hero-bg-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0.4) brightness(0.35);
+  }
+  .hero-bg-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(17,17,16,0.85) 45%, rgba(17,17,16,0.3) 100%),
+      linear-gradient(to top, rgba(17,17,16,0.7) 0%, transparent 40%);
+  }
+
+  .hero-main {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 56px 0;
+    padding-top: 80px;
+  }
+
+  .hero-tag {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: revealRight 0.6s ease 0.2s forwards;
+  }
+  .hero-tag-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.3);
+  }
+  .hero-tag-rule { width: 32px; height: 1px; background: var(--blue); }
+  .hero-tag-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .hero-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 12vw, 160px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 0;
+    opacity: 0;
+    animation: revealUp 0.8s ease 0.3s forwards;
+  }
+  .hero-headline .accent { color: var(--blue); }
+  .hero-headline .outline {
+    -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+    color: transparent;
+  }
+
+  .hero-bottom-row {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-top: 1px solid var(--rule-dark);
+    margin-top: 40px;
+    opacity: 0;
+    animation: fadeIn 0.7s ease 0.9s forwards;
+  }
+  .hero-bottom-cell {
+    padding: 32px 40px;
+    border-right: 1px solid var(--rule-dark);
+  }
+  .hero-bottom-cell:last-child { border-right: none; }
+
+  .hero-stat-row {
+    display: flex;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-big-stat {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--white);
+  }
+  .hero-big-stat span { color: var(--blue); }
+  .hero-big-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-top: 4px;
+  }
+
+  .hero-sub-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.55);
+    max-width: 320px;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .hero-cta-main {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.18em;
+    color: var(--coal);
+    background: var(--blue);
+    padding: 14px 32px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease;
+  }
+  .hero-cta-main:hover { background: var(--stone-light); }
+  .hero-cta-ghost {
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.25s ease, gap 0.25s ease;
+  }
+  .hero-cta-ghost:hover { color: var(--white); gap: 18px; }
+  .hero-cta-ghost::after { content: '→'; }
+
+  /* ── SPLIT INTRO ── */
+  .split-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--sand);
+    color: var(--coal);
+  }
+  .split-left {
+    padding: 100px 64px;
+    border-right: 1px solid var(--rule-light);
+  }
+  .split-right {
+    padding: 100px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .overline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .big-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 6vw, 80px);
+    letter-spacing: 0.03em;
+    line-height: 0.95;
+    color: var(--coal);
+  }
+  .big-heading .em { color: var(--blue); }
+
+  .split-body {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.85;
+    color: var(--stone);
+    margin-top: 32px;
+    max-width: 420px;
+  }
+
+  .split-facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 48px;
+    padding-top: 40px;
+    border-top: 1px solid var(--rule-light);
+  }
+  .split-fact-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 0.02em;
+    color: var(--blue);
+    line-height: 1;
+  }
+  .split-fact-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-top: 4px;
+  }
+
+  .modular-steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    flex: 1;
+  }
+  .mod-step {
+    display: flex;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule-light);
+    cursor: default;
+    transition: background 0.2s ease;
+  }
+  .mod-step:first-child { border-top: 1px solid var(--rule-light); }
+  .mod-step-icon {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(74,144,196,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--blue);
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .mod-step:hover .mod-step-icon {
+    background: var(--blue);
+    color: var(--white);
+  }
+  .mod-step-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--coal);
+    margin-bottom: 4px;
+  }
+  .mod-step-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--stone);
+  }
+
+  .split-cta-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    margin-top: 40px;
+    transition: gap 0.25s ease;
+  }
+  .split-cta-link:hover { gap: 24px; }
+  .split-cta-link span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.18em;
+    color: var(--coal);
+  }
+  .split-cta-arrow {
+    width: 40px; height: 1px;
+    background: var(--blue);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .split-cta-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0; top: -4px;
+    width: 8px; height: 8px;
+    border-right: 1px solid var(--blue);
+    border-top: 1px solid var(--blue);
+    transform: rotate(45deg);
+  }
+
+  /* ── ADVANTAGES — HORIZONTAL SCROLL FEEL ── */
+  .adv-section {
+    padding: 120px 56px;
+    background: var(--coal-mid);
+    overflow: hidden;
+  }
+  .adv-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+  }
+  .adv-big-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 7vw, 96px);
+    letter-spacing: 0.03em;
+    line-height: 0.92;
+    color: var(--white);
+  }
+  .adv-big-title .em { color: var(--blue); }
+  .adv-sub-text {
+    max-width: 380px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .adv-tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .adv-tile {
+    background: var(--coal-light);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: background 0.3s ease;
+  }
+  .adv-tile::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--blue);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .adv-tile:hover { background: rgba(74,144,196,0.06); }
+  .adv-tile:hover::after { transform: scaleX(1); }
+
+  .adv-tile-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    position: absolute;
+    top: 24px; right: 28px;
+  }
+  .adv-tile-icon {
+    width: 44px; height: 44px;
+    color: var(--blue);
+    margin-bottom: 24px;
+  }
+  .adv-tile-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    margin-bottom: 12px;
+    line-height: 1;
+  }
+  .adv-tile-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* ── FULL-BLEED IMAGE WITH OVERLAY TEXT ── */
+  .full-bleed {
+    position: relative;
+    height: 600px;
+    overflow: hidden;
+  }
+  .full-bleed img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0.5) brightness(0.5);
+  }
+  .full-bleed-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 64px 56px;
+    background: linear-gradient(to top, rgba(17,17,16,0.8) 0%, transparent 60%);
+  }
+  .full-bleed-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    width: 100%;
+    align-items: end;
+  }
+  .full-bleed-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    letter-spacing: 0.03em;
+    line-height: 0.95;
+    color: var(--white);
+  }
+  .full-bleed-heading .em { color: var(--blue); }
+  .full-bleed-sub {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 32px;
+  }
+  .full-bleed-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(74,144,196,0.4);
+    padding-bottom: 8px;
+    transition: color 0.25s ease, gap 0.25s ease;
+  }
+  .full-bleed-link:hover { color: var(--stone-light); gap: 22px; }
+  .full-bleed-link::after { content: '→'; }
+
+  /* ── PROCESS ── */
+  .process-section {
+    background: var(--coal);
+    padding: 120px 56px;
+  }
+  .process-inner { max-width: 1400px; margin: 0 auto; }
+  .process-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+    margin-bottom: 80px;
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--rule-dark);
+  }
+  .process-top-right {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(255,255,255,0.4);
+  }
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .p-step {
+    background: var(--coal-mid);
+    padding: 44px 36px;
+    border-top: 2px solid transparent;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .p-step:hover {
+    border-color: var(--blue);
+    background: var(--coal-light);
+  }
+  .p-step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.06);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .p-step-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .p-step-desc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ── TESTIMONIALS ── */
+  .test-section {
+    background: var(--sand);
+    padding: 120px 56px;
+    color: var(--coal);
+  }
+  .test-inner { max-width: 1400px; margin: 0 auto; }
+  .test-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--rule-light);
+  }
+  .test-big-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    letter-spacing: 0.03em;
+    line-height: 0.92;
+    color: var(--coal);
+  }
+  .test-big-title .em { color: var(--blue); }
+  .test-count {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: var(--stone-light);
+  }
+  .test-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .t-card {
+    background: var(--cream);
+    padding: 44px 36px;
+    border: 1px solid var(--rule-light);
+    position: relative;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .t-card:hover {
+    box-shadow: 0 16px 48px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+  }
+  .t-card-stars {
+    font-size: 13px;
+    color: var(--blue);
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+  }
+  .t-card-quote {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--coal);
+    margin-bottom: 32px;
+  }
+  .t-card-rule {
+    width: 32px; height: 1px;
+    background: var(--blue);
+    margin-bottom: 20px;
+  }
+  .t-card-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--coal);
+  }
+  .t-card-loc {
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--stone-light);
+    margin-top: 2px;
+  }
+  .t-card-corner {
+    position: absolute;
+    top: 24px; right: 28px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: rgba(0,0,0,0.04);
+    line-height: 1;
+  }
+
+  /* ── CTA FORM ── */
+  .cta-section {
+    display: grid;
+    grid-template-columns: 55% 1fr;
+  }
+  .cta-img-side {
+    position: relative;
+    overflow: hidden;
+    min-height: 700px;
+  }
+  .cta-img-side img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0.5) brightness(0.45);
+  }
+  .cta-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(17,17,16,0.2), rgba(17,17,16,0.6) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 64px;
+  }
+  .cta-big-tag {
+    font-family: 'Outfit', sans-serif;
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .cta-big-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 7vw, 96px);
+    letter-spacing: 0.03em;
+    line-height: 0.9;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .cta-big-title .em { color: var(--blue); }
+  .cta-body {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.6);
+    max-width: 380px;
+    margin-bottom: 32px;
+  }
+  .cta-contact-row {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+  }
+  .cta-contact-item {
+    font-family: 'Outfit', sans-serif;
+  }
+  .cta-contact-label {
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 4px;
+  }
+  .cta-contact-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    color: var(--white);
+  }
+
+  .cta-form-side {
+    background: var(--coal-mid);
+    padding: 64px 56px;
+    border-left: 1px solid var(--rule-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .form-hd {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .form-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 36px;
+    letter-spacing: 0.05em;
+  }
+  .form-group { margin-bottom: 16px; }
+  .form-label {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 8px;
+  }
+  .form-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--white);
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 13px 16px;
+    outline: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+    -webkit-appearance: none;
+  }
+  .form-input:focus {
+    border-color: var(--blue);
+    background: rgba(74,144,196,0.05);
+  }
+  .form-input::placeholder { color: rgba(255,255,255,0.2); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-select {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.5);
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 13px 16px;
+    outline: none;
+    -webkit-appearance: none;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+  }
+  .form-select:focus { border-color: var(--blue); }
+  .form-select option { background: var(--coal-mid); }
+  .form-submit {
+    width: 100%;
+    background: var(--blue);
+    color: var(--coal);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    padding: 18px;
+    border: none;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .form-submit:hover {
+    background: var(--stone-light);
+    transform: translateY(-1px);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--coal-mid);
+    padding: 72px 56px 36px;
+    border-top: 1px solid var(--rule-dark);
+  }
+  .footer-inner { max-width: 1400px; margin: 0 auto; }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 56px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--rule-dark);
+  }
+  .footer-brand-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .footer-brand-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 20px;
+  }
+  .footer-tagline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.25);
+    max-width: 240px;
+  }
+  .footer-col-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-links a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.3);
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-copy {
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.2);
+  }
+  .footer-lic {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: rgba(74,144,196,0.4);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes revealRight {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-crest-wrap">
+      <svg class="nav-crest" viewBox="0 0 28 28" fill="none">
+        <path d="M2 12C3.5 8,6 7,8 10L9 12C7.5 10,5 10.5,3.5 14Z" fill="#4A90C4" opacity="0.7"/>
+        <path d="M1.5 15C3 11,5.5 10,7.5 13L8.5 15C7 13,4.5 13.5,3 17Z" fill="#4A90C4" opacity="0.5"/>
+        <path d="M26 12C24.5 8,22 7,20 10L19 12C20.5 10,23 10.5,24.5 14Z" fill="#4A90C4" opacity="0.7"/>
+        <path d="M26.5 15C25 11,22.5 10,20.5 13L19.5 15C21 13,23.5 13.5,25 17Z" fill="#4A90C4" opacity="0.5"/>
+        <path d="M9 7L14 5L19 7L19 17C19 21,14 24,14 24C14 24,9 21,9 17Z" fill="#1C1C1A" stroke="#4A90C4" stroke-width="0.7"/>
+        <text x="14" y="19" text-anchor="middle" font-family="serif" font-size="9" font-weight="bold" fill="#4A90C4">B</text>
+      </svg>
+    </div>
+    <div>
+      <div class="nav-name">Biviano</div>
+      <div class="nav-sub">Modular Builders</div>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#what-is">What Is Modular</a></li>
+    <li><a href="#advantages">Why Biviano</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#stories">Stories</a></li>
+  </ul>
+
+  <a href="#consult" class="nav-cta">Begin Your Build</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg-img">
+    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80&auto=format&fit=crop" alt="Biviano luxury home">
+  </div>
+
+  <div class="hero-main">
+    <div class="hero-tag">
+      <span class="hero-tag-num">001</span>
+      <div class="hero-tag-rule"></div>
+      <span class="hero-tag-text">Luxury Modular Construction</span>
+    </div>
+    <h1 class="hero-headline">
+      Built<br>
+      <span class="accent">Better.</span><br>
+      <span class="outline">Built Faster.</span>
+    </h1>
+  </div>
+
+  <div class="hero-bottom-row">
+    <div class="hero-bottom-cell">
+      <div class="hero-stat-row">
+        <div>
+          <div class="hero-big-stat">200<span>+</span></div>
+          <div class="hero-big-label">Homes Delivered</div>
+        </div>
+        <div>
+          <div class="hero-big-stat">25<span>yr</span></div>
+          <div class="hero-big-label">Experience</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-bottom-cell">
+      <p class="hero-sub-text">Biviano builds bespoke luxury modular homes — precision-crafted in a controlled facility, assembled on your land, delivered on time and on budget.</p>
+    </div>
+    <div class="hero-bottom-cell">
+      <div class="hero-cta-group">
+        <a href="#consult" class="hero-cta-main">Schedule a Consultation</a>
+        <a href="#what-is" class="hero-cta-ghost">Learn How It Works</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SPLIT INTRO ── -->
+<section id="what-is" class="split-intro">
+  <div class="split-left">
+    <span class="overline reveal">What Is Modular Construction</span>
+    <h2 class="big-heading reveal reveal-delay-1">A Smarter<br>Way to Build<br><span class="em">Beautifully.</span></h2>
+    <p class="split-body reveal reveal-delay-2">
+      Modular homes are precision-built in sections inside a climate-controlled factory, 
+      transported, and assembled on your permanent foundation — meeting every local 
+      and state building code. Superior craftsmanship. Less waste. Faster path to your home.
+    </p>
+    <div class="split-facts reveal reveal-delay-3">
+      <div>
+        <div class="split-fact-num">60%</div>
+        <div class="split-fact-label">Faster Than Traditional Build</div>
+      </div>
+      <div>
+        <div class="split-fact-num">30%</div>
+        <div class="split-fact-label">Less Construction Waste</div>
+      </div>
+      <div>
+        <div class="split-fact-num">98%</div>
+        <div class="split-fact-label">Client Satisfaction Rate</div>
+      </div>
+      <div>
+        <div class="split-fact-num">100%</div>
+        <div class="split-fact-label">Code Compliant</div>
+      </div>
+    </div>
+  </div>
+  <div class="split-right">
+    <div class="modular-steps-list reveal reveal-delay-1">
+      <div class="mod-step">
+        <div class="mod-step-icon">01</div>
+        <div>
+          <div class="mod-step-title">Factory-Built Precision</div>
+          <div class="mod-step-desc">Built indoors by skilled craftspeople — eliminating weather delays and ensuring consistent quality control.</div>
+        </div>
+      </div>
+      <div class="mod-step">
+        <div class="mod-step-icon">02</div>
+        <div>
+          <div class="mod-step-title">Code-Compliant by Design</div>
+          <div class="mod-step-desc">Meets the same local and state codes as site-built homes, inspected at every stage of construction.</div>
+        </div>
+      </div>
+      <div class="mod-step">
+        <div class="mod-step-icon">03</div>
+        <div>
+          <div class="mod-step-title">Permanent Foundation</div>
+          <div class="mod-step-desc">Assembled on a traditional foundation on your land — appreciates in value like any custom residence.</div>
+        </div>
+      </div>
+      <div class="mod-step">
+        <div class="mod-step-icon">04</div>
+        <div>
+          <div class="mod-step-title">Fully Customizable</div>
+          <div class="mod-step-desc">From floor plans to finishes, every Biviano home is designed around your vision — nothing is off the shelf.</div>
+        </div>
+      </div>
+    </div>
+    <a href="#consult" class="split-cta-link reveal reveal-delay-2">
+      <span>Begin Your Consultation</span>
+      <div class="split-cta-arrow"></div>
+    </a>
+  </div>
+</section>
+
+<!-- ── ADVANTAGES ── -->
+<section id="advantages" class="adv-section">
+  <div class="adv-header-row reveal">
+    <div>
+      <span class="overline" style="color:rgba(255,255,255,0.3);">The Biviano Difference</span>
+      <h2 class="adv-big-title">Why Discerning<br>Buyers Choose<br><span class="em">Biviano.</span></h2>
+    </div>
+    <p class="adv-sub-text">We don't build cookie-cutter homes. Every Biviano residence begins with your vision and ends with a landmark — built to luxury standards, delivered with remarkable efficiency.</p>
+  </div>
+  <div class="adv-tiles">
+    <div class="adv-tile reveal">
+      <div class="adv-tile-num">01</div>
+      <svg class="adv-tile-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="6" width="32" height="32"/><path d="M14 22h16M22 14v16"/></svg>
+      <div class="adv-tile-title">Fully Custom Design</div>
+      <div class="adv-tile-desc">Floor plans, elevations, and interior selections — all designed specifically for your vision. Nothing off the shelf.</div>
+    </div>
+    <div class="adv-tile reveal reveal-delay-1">
+      <div class="adv-tile-num">02</div>
+      <svg class="adv-tile-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="22" cy="22" r="14"/><path d="M22 12v10l6 4"/></svg>
+      <div class="adv-tile-title">60% Faster Delivery</div>
+      <div class="adv-tile-desc">Factory build and site preparation happen simultaneously — your home is ready in a fraction of the time.</div>
+    </div>
+    <div class="adv-tile reveal reveal-delay-2">
+      <div class="adv-tile-num">03</div>
+      <svg class="adv-tile-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 6L6 14v14c0 8 16 14 16 14s16-6 16-14V14L22 6z"/><path d="M15 22l5 5 9-10"/></svg>
+      <div class="adv-tile-title">Superior Quality Control</div>
+      <div class="adv-tile-desc">Every stage inspected in our controlled facility. No rain damage, no variability, no compromise.</div>
+    </div>
+    <div class="adv-tile reveal reveal-delay-1">
+      <div class="adv-tile-num">04</div>
+      <svg class="adv-tile-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 34L22 10l14 24H8z"/><path d="M14 34V24M30 34V24M22 34V18"/></svg>
+      <div class="adv-tile-title">Energy Efficiency</div>
+      <div class="adv-tile-desc">Tighter construction tolerances and advanced insulation consistently outperform traditional site-built homes.</div>
+    </div>
+    <div class="adv-tile reveal reveal-delay-2">
+      <div class="adv-tile-num">05</div>
+      <svg class="adv-tile-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="22" cy="18" r="7"/><path d="M10 38c0-6.627 5.373-12 12-12s12 5.373 12 12"/></svg>
+      <div class="adv-tile-title">Dedicated Project Team</div>
+      <div class="adv-tile-desc">One senior manager. One point of contact. Complete transparency from concept to keys.</div>
+    </div>
+    <div class="adv-tile reveal reveal-delay-3">
+      <div class="adv-tile-num">06</div>
+      <svg class="adv-tile-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="14" width="32" height="24"/><path d="M14 14V10a8 8 0 0116 0v4"/><circle cx="22" cy="26" r="3"/></svg>
+      <div class="adv-tile-title">Fixed-Price Contract</div>
+      <div class="adv-tile-desc">No cost creep. Your contract guarantees the price, the timeline, and the result — before a nail is driven.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FULL BLEED ── -->
+<div class="full-bleed">
+  <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&q=80&auto=format&fit=crop" alt="Luxury modular home interior">
+  <div class="full-bleed-content">
+    <div class="full-bleed-inner">
+      <h2 class="full-bleed-heading">See Our<br>Signature<br><span class="em">Collections.</span></h2>
+      <div>
+        <p class="full-bleed-sub">From intimate retreats to grand estate residences — every Biviano home is a landmark. Explore our signature floor plan collections, each built to your exact specifications.</p>
+        <a href="#" class="full-bleed-link">View All Floor Plans</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROCESS ── -->
+<section id="process" class="process-section">
+  <div class="process-inner">
+    <div class="process-top reveal">
+      <div>
+        <span class="overline" style="color:rgba(255,255,255,0.3);">How It Works</span>
+        <h2 class="big-heading" style="color:var(--white);margin-top:16px;">From Vision<br>to <span style="color:var(--blue);">Keys.</span></h2>
+      </div>
+      <p class="process-top-right">Your path to a Biviano home is clear, collaborative, and always on your terms. One team guides you through every decision — with full transparency and zero surprises.</p>
+    </div>
+    <div class="process-steps reveal reveal-delay-1">
+      <div class="p-step">
+        <div class="p-step-num">01</div>
+        <div class="p-step-title">Consultation</div>
+        <div class="p-step-desc">We learn your vision, land, budget, and timeline. Meet the team that will build your home.</div>
+      </div>
+      <div class="p-step">
+        <div class="p-step-num">02</div>
+        <div class="p-step-title">Design & Plans</div>
+        <div class="p-step-desc">Our designers develop floor plans, elevations, and interior selections — refined until perfect.</div>
+      </div>
+      <div class="p-step">
+        <div class="p-step-num">03</div>
+        <div class="p-step-title">Factory Build</div>
+        <div class="p-step-desc">Precision-built in our climate-controlled facility while your site is prepared simultaneously.</div>
+      </div>
+      <div class="p-step">
+        <div class="p-step-num">04</div>
+        <div class="p-step-title">Delivery & Set</div>
+        <div class="p-step-desc">Assembled on your permanent foundation. Move-in ready in weeks, not years.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="stories" class="test-section">
+  <div class="test-inner">
+    <div class="test-top reveal">
+      <h2 class="test-big-title">Homes That<br><span class="em">Changed</span><br>Everything.</h2>
+      <div class="test-count">★★★★★ &nbsp; 98% Client Satisfaction</div>
+    </div>
+    <div class="test-cards">
+      <div class="t-card reveal">
+        <div class="t-card-corner">"</div>
+        <div class="t-card-stars">★★★★★</div>
+        <p class="t-card-quote">"We toured a dozen builders before finding Biviano. The difference in quality was immediately obvious. Our home was done in four months."</p>
+        <div class="t-card-rule"></div>
+        <div class="t-card-name">Robert & Christine Mercer</div>
+        <div class="t-card-loc">Ashford Estate — Scottsdale, AZ</div>
+      </div>
+      <div class="t-card reveal reveal-delay-1">
+        <div class="t-card-corner">"</div>
+        <div class="t-card-stars">★★★★★</div>
+        <p class="t-card-quote">"The fixed-price contract was a game changer. We knew exactly what we'd pay. No surprises. Just a stunning home on budget and on time."</p>
+        <div class="t-card-rule"></div>
+        <div class="t-card-name">James Holloway</div>
+        <div class="t-card-loc">The Meridian — Denver, CO</div>
+      </div>
+      <div class="t-card reveal reveal-delay-2">
+        <div class="t-card-corner">"</div>
+        <div class="t-card-stars">★★★★★</div>
+        <p class="t-card-quote">"I'm an architect. The craftsmanship inside those modules was better than anything I'd seen on a traditional job site. Biviano is the real deal."</p>
+        <div class="t-card-rule"></div>
+        <div class="t-card-name">Diana Park, AIA</div>
+        <div class="t-card-loc">Custom Design — Portland, OR</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section id="consult" class="cta-section">
+  <div class="cta-img-side">
+    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80&auto=format&fit=crop" alt="Biviano luxury home">
+    <div class="cta-img-overlay">
+      <span class="cta-big-tag">Begin Your Build</span>
+      <h2 class="cta-big-title">Let's Build<br>Your <span class="em">Landmark</span><br>Home.</h2>
+      <p class="cta-body">Your first consultation is complimentary. No obligation. We'll discuss your vision, your land, your timeline, and show you what's possible.</p>
+      <div class="cta-contact-row">
+        <div class="cta-contact-item">
+          <div class="cta-contact-label">Call Us</div>
+          <div class="cta-contact-val">(800) 248-2664</div>
+        </div>
+        <div style="width:1px;height:32px;background:rgba(255,255,255,0.15);"></div>
+        <div class="cta-contact-item">
+          <div class="cta-contact-label">Email</div>
+          <div class="cta-contact-val" style="font-size:16px;font-family:'Outfit',sans-serif;font-weight:300;color:var(--blue);">build@biviano.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-form-side">
+    <div class="form-hd">Free Consultation</div>
+    <div class="form-sub">We'll respond within one business day.</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" placeholder="Robert"></div>
+      <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" placeholder="Mercer"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="robert@email.com"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input" placeholder="(555) 000-0000"></div>
+      <div class="form-group">
+        <label class="form-label">Home Size</label>
+        <select class="form-select">
+          <option value="">Select range...</option>
+          <option>Under 2,000 sq ft</option>
+          <option>2,000 – 3,500 sq ft</option>
+          <option>3,500 – 5,000 sq ft</option>
+          <option>5,000+ sq ft Custom</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Your Project</label><textarea class="form-input" rows="3" placeholder="Land location, style, timeline..." style="resize:none;"></textarea></div>
+    <button class="form-submit">Schedule My Free Consultation →</button>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">Biviano</div>
+        <div class="footer-brand-sub">Modular Builders</div>
+        <p class="footer-tagline">Precision-crafted luxury modular homes built to your vision — faster, smarter, built to last generations.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Process</a></li>
+          <li><a href="#">Sustainability</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Residences</div>
+        <ul class="footer-links">
+          <li><a href="#">Floor Plans</a></li>
+          <li><a href="#">Gallery</a></li>
+          <li><a href="#">Custom Homes</a></li>
+          <li><a href="#">Virtual Tours</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Resources</div>
+        <ul class="footer-links">
+          <li><a href="#">What Is Modular?</a></li>
+          <li><a href="#">Financing Guide</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Biviano General Contracting. All rights reserved.</div>
+      <div class="footer-lic">Licensed · Bonded · Insured</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>

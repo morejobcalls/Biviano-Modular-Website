@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biviano Modular Builders — Option 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #3A7EBF;
+    --blue-mid: #4A90C4;
+    --blue-light: #EAF3FB;
+    --blue-pale: #F4F9FD;
+    --cream: #F8F6F2;
+    --white: #FFFFFF;
+    --ink: #0E1A26;
+    --ink-mid: #2A3D50;
+    --ink-light: #5A7080;
+    --ink-pale: #8DA0AE;
+    --rule: #D8E4EE;
+    --gold: #B8976A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 64px;
+    height: 76px;
+    background: rgba(255,255,255,0.95);
+    border-bottom: 1px solid var(--rule);
+    backdrop-filter: blur(12px);
+    transition: box-shadow 0.3s ease;
+  }
+  nav.scrolled {
+    box-shadow: 0 2px 40px rgba(58,126,191,0.08);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .nav-crest {
+    width: 40px; height: 40px;
+  }
+
+  .nav-wordmark {
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-wordmark-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .nav-wordmark-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 0.28em;
+    color: var(--blue);
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+  }
+  .nav-links a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+  .nav-links a:hover { color: var(--blue); }
+
+  .nav-cta {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--ink);
+    padding: 12px 28px;
+    text-decoration: none;
+    border: 1px solid var(--ink);
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .nav-cta:hover {
+    background: var(--blue);
+    border-color: var(--blue);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 76px;
+  }
+
+  .hero-left {
+    background: var(--cream);
+    padding: 100px 64px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Fine architectural line pattern */
+  .hero-left::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent 10%, var(--rule) 30%, var(--rule) 70%, transparent 90%);
+  }
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image:
+      linear-gradient(var(--rule) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: slideIn 0.7s ease 0.2s forwards;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-eyebrow-badge {
+    background: var(--blue);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+  }
+  .hero-eyebrow-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+  }
+
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(44px, 5.5vw, 72px);
+    font-weight: 400;
+    line-height: 1.08;
+    color: var(--ink);
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: slideIn 0.7s ease 0.35s forwards;
+  }
+  .hero-headline em {
+    font-style: italic;
+    color: var(--blue);
+  }
+
+  .hero-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--ink-light);
+    max-width: 420px;
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: slideIn 0.7s ease 0.5s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: slideIn 0.7s ease 0.65s forwards;
+  }
+
+  .btn-ink {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--ink);
+    padding: 17px 36px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .btn-ink:hover {
+    background: var(--blue);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    padding: 17px 36px;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.3s ease, color 0.3s ease;
+  }
+  .btn-outline:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+
+  /* Hero right — large image with stats overlay */
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-right img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-right::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(14,26,38,0.1), rgba(14,26,38,0.4));
+  }
+
+  .hero-badge-block {
+    position: absolute;
+    bottom: 0; left: 0;
+    background: var(--white);
+    padding: 32px 40px;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 0;
+    border-top: 3px solid var(--blue);
+    opacity: 0;
+    animation: fadeIn 0.7s ease 1s forwards;
+  }
+  .stat-block {
+    padding: 0 32px 0 0;
+    border-right: 1px solid var(--rule);
+    margin-right: 32px;
+  }
+  .stat-block:last-child {
+    border-right: none;
+    margin-right: 0;
+    padding-right: 0;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stat-num span { color: var(--blue); }
+  .stat-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-pale);
+    margin-top: 5px;
+  }
+
+  /* Floating award pill */
+  .hero-award {
+    position: absolute;
+    top: 40px; right: 40px;
+    background: rgba(255,255,255,0.95);
+    border: 1px solid var(--rule);
+    padding: 14px 20px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    animation: fadeIn 0.6s ease 1.2s forwards;
+  }
+  .award-star { font-size: 18px; color: var(--gold); }
+  .award-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--ink-light);
+    line-height: 1.4;
+  }
+  .award-text strong {
+    display: block;
+    font-weight: 500;
+    color: var(--ink);
+    font-size: 11px;
+  }
+
+  /* ── MARQUEE STRIP ── */
+  .marquee-strip {
+    background: var(--ink);
+    overflow: hidden;
+    padding: 16px 0;
+    white-space: nowrap;
+  }
+  .marquee-inner {
+    display: inline-flex;
+    animation: marquee 25s linear infinite;
+  }
+  .marquee-item {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    padding: 0 40px;
+  }
+  .marquee-dot {
+    color: var(--blue-mid);
+    font-size: 16px;
+    vertical-align: middle;
+  }
+
+  /* ── WHAT IS MODULAR ── */
+  .modular-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+  }
+
+  .modular-img-side {
+    position: relative;
+    overflow: hidden;
+  }
+  .modular-img-side img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85);
+    transition: transform 0.8s ease;
+  }
+  .modular-img-side:hover img { transform: scale(1.03); }
+  .modular-img-side::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 70%, rgba(248,246,242,0.4));
+  }
+
+  .modular-content-side {
+    background: var(--cream);
+    padding: 100px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid var(--rule);
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .tag-line { width: 24px; height: 1px; background: var(--blue); }
+  .tag-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 3.5vw, 48px);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .section-heading em { font-style: italic; color: var(--blue); }
+
+  .section-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--ink-light);
+    margin-bottom: 44px;
+  }
+
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .step-item {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+    transition: background 0.2s ease;
+  }
+  .step-item:first-child { border-top: 1px solid var(--rule); }
+  .step-num-box {
+    width: 48px; height: 48px;
+    border: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--blue);
+    flex-shrink: 0;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .step-item:hover .step-num-box {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: var(--white);
+  }
+  .step-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 5px;
+  }
+  .step-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--ink-light);
+  }
+
+  /* ── ADVANTAGES ── */
+  .advantages-section {
+    padding: 120px 64px;
+    background: var(--white);
+  }
+  .advantages-inner { max-width: 1400px; margin: 0 auto; }
+
+  .adv-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: end;
+    margin-bottom: 72px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .adv-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--ink-light);
+  }
+
+  .adv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  .adv-card {
+    padding: 40px 36px;
+    border: 1px solid var(--rule);
+    position: relative;
+    background: var(--white);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    overflow: hidden;
+  }
+  .adv-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--blue);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+    transform-origin: left;
+  }
+  .adv-card:hover {
+    border-color: rgba(58,126,191,0.3);
+    box-shadow: 0 12px 48px rgba(58,126,191,0.08);
+    transform: translateY(-3px);
+  }
+  .adv-card:hover::before { transform: scaleX(1); }
+
+  .adv-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 400;
+    color: var(--blue-light);
+    line-height: 1;
+    margin-bottom: 20px;
+    transition: color 0.3s ease;
+  }
+  .adv-card:hover .adv-number { color: rgba(58,126,191,0.15); }
+
+  .adv-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .adv-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--ink-light);
+  }
+
+  /* ── GALLERY STRIP ── */
+  .gallery-strip {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    height: 520px;
+    gap: 3px;
+  }
+  .gallery-item {
+    overflow: hidden;
+    position: relative;
+  }
+  .gallery-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease, filter 0.4s ease;
+    filter: saturate(0.75);
+  }
+  .gallery-item:hover img {
+    transform: scale(1.05);
+    filter: saturate(1);
+  }
+  .gallery-item-label {
+    position: absolute;
+    bottom: 24px; left: 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--white);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+  .gallery-item:hover .gallery-item-label {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .gallery-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(14,26,38,0.5) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .gallery-item:hover::after { opacity: 1; }
+
+  /* ── PROCESS ── */
+  .process-section {
+    padding: 120px 64px;
+    background: var(--blue-pale);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .process-inner { max-width: 1400px; margin: 0 auto; }
+  .process-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 80px;
+  }
+  .process-header-right {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--ink-light);
+  }
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--rule);
+  }
+  .proc-step {
+    background: var(--white);
+    padding: 48px 36px;
+    border-bottom: 3px solid transparent;
+    transition: border-color 0.3s ease;
+    position: relative;
+  }
+  .proc-step:hover { border-color: var(--blue); }
+  .proc-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 400;
+    color: var(--blue-light);
+    line-height: 1;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .proc-num::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; left: 0;
+    width: 24px; height: 1px;
+    background: var(--blue);
+  }
+  .proc-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+  .proc-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--ink-light);
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-section {
+    padding: 120px 64px;
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+  .testimonials-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .testimonials-inner { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+  .test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+  }
+  .test-header .tag-text { color: rgba(255,255,255,0.4); }
+  .test-header .tag-line { background: rgba(255,255,255,0.2); }
+  .test-header .section-heading { color: var(--white); }
+  .test-header .section-heading em { color: var(--blue-mid); }
+
+  .test-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .test-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 44px 36px;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .test-card:hover {
+    background: rgba(58,126,191,0.08);
+    border-color: rgba(58,126,191,0.25);
+  }
+  .stars {
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+  .test-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 32px;
+  }
+  .test-author-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 24px;
+  }
+  .test-author-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+  .test-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: 0.05em;
+  }
+  .test-location {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.35);
+    margin-top: 2px;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .cta-left {
+    background: var(--blue);
+    padding: 100px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .cta-left .section-heading { color: var(--white); }
+  .cta-left .section-heading em { color: var(--ink); font-style: italic; }
+  .cta-left .section-body { color: rgba(255,255,255,0.8); }
+  .cta-left .tag-text { color: rgba(255,255,255,0.6); }
+  .cta-left .tag-line { background: rgba(255,255,255,0.4); }
+  .cta-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 40px;
+  }
+  .cta-detail {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .cta-detail-icon {
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .cta-detail-icon svg { width: 16px; height: 16px; stroke: var(--white); fill: none; stroke-width: 1.5; }
+  .cta-detail-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.85);
+  }
+  .cta-detail-text strong { font-weight: 500; color: var(--white); display: block; }
+
+  .cta-right {
+    background: var(--cream);
+    padding: 80px 80px;
+    border-left: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .form-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--ink-light);
+    margin-bottom: 36px;
+  }
+  .form-group { margin-bottom: 18px; }
+  .form-label {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+  .form-input {
+    width: 100%;
+    background: var(--white);
+    border: 1px solid var(--rule);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 13px 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    -webkit-appearance: none;
+  }
+  .form-input:focus { border-color: var(--blue); }
+  .form-input::placeholder { color: var(--ink-pale); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-select {
+    width: 100%;
+    background: var(--white);
+    border: 1px solid var(--rule);
+    color: var(--ink-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 13px 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+  .form-select:focus { border-color: var(--blue); }
+  .form-select option { background: var(--white); }
+  .form-submit {
+    width: 100%;
+    background: var(--ink);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 18px;
+    border: none;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .form-submit:hover {
+    background: var(--blue);
+    transform: translateY(-1px);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    padding: 72px 64px 36px;
+    color: var(--white);
+  }
+  .footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 56px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 36px;
+  }
+  .footer-brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .footer-brand-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: var(--blue-mid);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .footer-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.35);
+    max-width: 240px;
+  }
+  .footer-col-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-links a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-copy {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.05em;
+  }
+  .footer-lic {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(58,126,191,0.5);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <svg class="nav-crest" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 17C4 11,8 9,11 13L13 16C10 13,6 14,4 19Z" fill="#3A7EBF" opacity="0.7"/>
+      <path d="M1 20C3 14,7 12,10 16L12 19C9 16,5 17,3 22Z" fill="#3A7EBF" opacity="0.5"/>
+      <path d="M38 17C36 11,32 9,29 13L27 16C30 13,34 14,36 19Z" fill="#3A7EBF" opacity="0.7"/>
+      <path d="M39 20C37 14,33 12,30 16L28 19C31 16,35 17,37 22Z" fill="#3A7EBF" opacity="0.5"/>
+      <path d="M12 10L20 7L28 10L28 24C28 29,20 34,20 34C20 34,12 29,12 24Z" fill="#EAF3FB" stroke="#3A7EBF" stroke-width="0.8"/>
+      <text x="20" y="26" text-anchor="middle" font-family="serif" font-size="13" font-weight="bold" fill="#3A7EBF">B</text>
+    </svg>
+    <div class="nav-wordmark">
+      <span class="nav-wordmark-name">Biviano</span>
+      <span class="nav-wordmark-sub">Modular Builders</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#modular">What Is Modular</a></li>
+    <li><a href="#advantages">Why Biviano</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#stories">Stories</a></li>
+  </ul>
+
+  <a href="#consult" class="nav-cta">Begin Your Build</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-badge">Est. 2000</div>
+      <span class="hero-eyebrow-text">Luxury Modular Construction</span>
+    </div>
+    <h1 class="hero-headline">
+      Precision Built.<br>
+      <em>Beautifully</em><br>
+      Delivered.
+    </h1>
+    <p class="hero-sub">
+      Biviano Modular Builders crafts bespoke luxury homes in a controlled factory 
+      environment — then assembles them on your land with speed, precision, and a 
+      standard of quality that traditional construction cannot match.
+    </p>
+    <div class="hero-actions">
+      <a href="#consult" class="btn-ink">Schedule a Consultation</a>
+      <a href="#gallery" class="btn-outline">View Our Work</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80&auto=format&fit=crop" alt="Biviano luxury modular home">
+
+    <div class="hero-award">
+      <div class="award-star">★</div>
+      <div class="award-text">
+        <strong>Builder of Excellence</strong>
+        Modular Home Builders Association
+      </div>
+    </div>
+
+    <div class="hero-badge-block">
+      <div class="stat-block">
+        <div class="stat-num">200<span>+</span></div>
+        <div class="stat-label">Homes Built</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">60<span>%</span></div>
+        <div class="stat-label">Faster Build</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">25<span>yr</span></div>
+        <div class="stat-label">Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="marquee-item">Luxury Modular Construction</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Factory Precision</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Custom Floor Plans</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Fixed-Price Contracts</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Energy Efficient</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Permanent Foundation</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Luxury Modular Construction</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Factory Precision</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Custom Floor Plans</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Fixed-Price Contracts</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Energy Efficient</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Permanent Foundation</span><span class="marquee-dot">·</span>
+  </div>
+</div>
+
+<!-- ── WHAT IS MODULAR ── -->
+<section id="modular" class="modular-section">
+  <div class="modular-img-side">
+    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80&auto=format&fit=crop" alt="Modern modular home interior">
+  </div>
+  <div class="modular-content-side">
+    <div class="tag reveal">
+      <div class="tag-line"></div>
+      <div class="tag-text">What Is Modular</div>
+    </div>
+    <h2 class="section-heading reveal reveal-delay-1">A Smarter Way<br>to Build <em>Beautifully</em></h2>
+    <p class="section-body reveal reveal-delay-2">
+      Modular homes are precision-built in sections inside a climate-controlled factory, 
+      then transported and assembled on your permanent foundation — meeting every local 
+      and state building code. Superior craftsmanship. Less waste. A faster path to the 
+      home you've always imagined.
+    </p>
+    <div class="step-list reveal reveal-delay-3">
+      <div class="step-item">
+        <div class="step-num-box">1</div>
+        <div>
+          <div class="step-title">Factory-Built Precision</div>
+          <div class="step-desc">Built indoors by skilled craftspeople — no weather delays, consistent quality control.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num-box">2</div>
+        <div>
+          <div class="step-title">Code-Compliant by Design</div>
+          <div class="step-desc">Meets the same local and state codes as site-built homes, inspected throughout.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num-box">3</div>
+        <div>
+          <div class="step-title">Permanent Foundation</div>
+          <div class="step-desc">Assembled on a traditional foundation — appreciates in value like any custom home.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ADVANTAGES ── -->
+<section id="advantages" class="advantages-section">
+  <div class="advantages-inner">
+    <div class="adv-header">
+      <div>
+        <div class="tag reveal"><div class="tag-line"></div><div class="tag-text">The Biviano Difference</div></div>
+        <h2 class="section-heading reveal reveal-delay-1">Why Discerning<br>Buyers Choose <em>Us</em></h2>
+      </div>
+      <p class="adv-body reveal reveal-delay-2">
+        We don't build cookie-cutter homes. Every Biviano residence begins with your vision 
+        and ends with a landmark — delivered with luxury standards and remarkable efficiency. 
+        Fixed prices. Dedicated teams. No surprises.
+      </p>
+    </div>
+    <div class="adv-grid">
+      <div class="adv-card reveal">
+        <div class="adv-number">01</div>
+        <div class="adv-title">Fully Custom Design</div>
+        <div class="adv-desc">Floor plans, elevations, interior selections — all designed specifically for your vision. Nothing off the shelf.</div>
+      </div>
+      <div class="adv-card reveal reveal-delay-1">
+        <div class="adv-number">02</div>
+        <div class="adv-title">60% Faster Delivery</div>
+        <div class="adv-desc">Factory build and site preparation happen simultaneously — your home is ready in a fraction of the time.</div>
+      </div>
+      <div class="adv-card reveal reveal-delay-2">
+        <div class="adv-number">03</div>
+        <div class="adv-title">Superior Quality Control</div>
+        <div class="adv-desc">Every stage is inspected in our controlled facility. No rain damage, no variability, no compromise.</div>
+      </div>
+      <div class="adv-card reveal reveal-delay-1">
+        <div class="adv-number">04</div>
+        <div class="adv-title">Energy Efficiency</div>
+        <div class="adv-desc">Tighter construction tolerances and advanced insulation mean lower energy costs for the life of the home.</div>
+      </div>
+      <div class="adv-card reveal reveal-delay-2">
+        <div class="adv-number">05</div>
+        <div class="adv-title">Dedicated Project Team</div>
+        <div class="adv-desc">One senior project manager. One point of contact. Complete transparency from concept to keys.</div>
+      </div>
+      <div class="adv-card reveal reveal-delay-3">
+        <div class="adv-number">06</div>
+        <div class="adv-title">Fixed-Price Contract</div>
+        <div class="adv-desc">No cost creep. Your contract guarantees the price, the timeline, and the result — before a nail is driven.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GALLERY ── -->
+<section id="gallery" class="gallery-strip">
+  <div class="gallery-item">
+    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=900&q=80&auto=format&fit=crop" alt="The Ashford">
+    <span class="gallery-item-label">The Ashford</span>
+  </div>
+  <div class="gallery-item">
+    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80&auto=format&fit=crop" alt="The Meridian">
+    <span class="gallery-item-label">The Meridian</span>
+  </div>
+  <div class="gallery-item">
+    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80&auto=format&fit=crop" alt="The Pinnacle">
+    <span class="gallery-item-label">The Pinnacle</span>
+  </div>
+</section>
+
+<!-- ── PROCESS ── -->
+<section id="process" class="process-section">
+  <div class="process-inner">
+    <div class="process-header reveal">
+      <div>
+        <div class="tag"><div class="tag-line"></div><div class="tag-text">How It Works</div></div>
+        <h2 class="section-heading" style="margin-top:16px;">From Vision<br>to <em>Keys</em></h2>
+      </div>
+      <p class="process-header-right">
+        Your path to a Biviano home is clear, collaborative, and always on your terms. 
+        We guide you through every decision — from first concept to the day you open 
+        your front door — with full transparency and no surprises.
+      </p>
+    </div>
+    <div class="process-steps reveal reveal-delay-1">
+      <div class="proc-step">
+        <div class="proc-num">01</div>
+        <div class="proc-title">Consultation</div>
+        <div class="proc-desc">We learn your vision, land, budget, and timeline. Meet the team that will build your home.</div>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">02</div>
+        <div class="proc-title">Design & Plans</div>
+        <div class="proc-desc">Our designers develop floor plans, elevations, and interior selections — refined until perfect.</div>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">03</div>
+        <div class="proc-title">Factory Build</div>
+        <div class="proc-desc">Your home is precision-built in our climate-controlled facility while your site is prepared simultaneously.</div>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">04</div>
+        <div class="proc-title">Delivery & Set</div>
+        <div class="proc-desc">Modules arrive and are assembled on your permanent foundation. Move-in ready in weeks, not years.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="stories" class="testimonials-section">
+  <div class="testimonials-inner">
+    <div class="test-header reveal">
+      <div>
+        <div class="tag"><div class="tag-line"></div><div class="tag-text">Client Stories</div></div>
+        <h2 class="section-heading" style="margin-top:16px;color:var(--white);">Homes That<br><em>Changed</em> Everything</h2>
+      </div>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="test-quote">"We toured a dozen builders before finding Biviano. The difference in quality was immediately obvious. Our home was done in four months."</p>
+        <div class="test-author-row">
+          <div class="test-author-dot">RM</div>
+          <div>
+            <div class="test-name">Robert & Christine Mercer</div>
+            <div class="test-location">Ashford Estate — Scottsdale, AZ</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card reveal reveal-delay-1">
+        <div class="stars">★★★★★</div>
+        <p class="test-quote">"The fixed-price contract was a game changer. We knew exactly what we'd pay. No surprises. Just a stunning home on budget and on time."</p>
+        <div class="test-author-row">
+          <div class="test-author-dot">JH</div>
+          <div>
+            <div class="test-name">James Holloway</div>
+            <div class="test-location">The Meridian — Denver, CO</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card reveal reveal-delay-2">
+        <div class="stars">★★★★★</div>
+        <p class="test-quote">"I'm an architect. I was skeptical modular could meet my standards. The craftsmanship inside those modules was better than any job site I've seen."</p>
+        <div class="test-author-row">
+          <div class="test-author-dot">DP</div>
+          <div>
+            <div class="test-name">Diana Park, AIA</div>
+            <div class="test-location">Custom Design — Portland, OR</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA / FORM ── -->
+<section id="consult" class="cta-section">
+  <div class="cta-left">
+    <div class="tag reveal"><div class="tag-line"></div><div class="tag-text">Begin Your Build</div></div>
+    <h2 class="section-heading reveal reveal-delay-1" style="color:var(--white);">Let's Build Your<br><em>Landmark</em> Home</h2>
+    <p class="section-body reveal reveal-delay-2">Your first consultation is complimentary. We'll discuss your vision, your land, your timeline, and your budget — and show you exactly what's possible.</p>
+    <div class="cta-details reveal reveal-delay-3">
+      <div class="cta-detail">
+        <div class="cta-detail-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 10.79a2 2 0 012-2.18h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 15a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.94.38 1.9.65 2.81.7A2 2 0 0122 22z"/></svg></div>
+        <div class="cta-detail-text"><strong>(800) 248-2664</strong>Mon–Fri 8am–6pm</div>
+      </div>
+      <div class="cta-detail">
+        <div class="cta-detail-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div class="cta-detail-text"><strong>build@biviano.com</strong>Response within 24 hours</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-right reveal reveal-delay-2">
+    <div class="form-title">Request Free Consultation</div>
+    <div class="form-subtitle">No obligation. We'll reach out within one business day.</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" placeholder="Robert"></div>
+      <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" placeholder="Mercer"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="robert@email.com"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input" placeholder="(555) 000-0000"></div>
+      <div class="form-group">
+        <label class="form-label">Home Size</label>
+        <select class="form-select">
+          <option value="">Select range...</option>
+          <option>Under 2,000 sq ft</option>
+          <option>2,000 – 3,500 sq ft</option>
+          <option>3,500 – 5,000 sq ft</option>
+          <option>5,000+ sq ft Custom</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Tell Us About Your Project</label><textarea class="form-input" rows="3" placeholder="Land location, style preferences, timeline..." style="resize:none;"></textarea></div>
+    <button class="form-submit">Schedule My Free Consultation →</button>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">Biviano</div>
+        <div class="footer-brand-sub">Modular Builders</div>
+        <p class="footer-tagline">Precision-crafted luxury modular homes built to your vision — faster, smarter, built to last generations.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Process</a></li>
+          <li><a href="#">Sustainability</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Residences</div>
+        <ul class="footer-links">
+          <li><a href="#">Floor Plans</a></li>
+          <li><a href="#">Gallery</a></li>
+          <li><a href="#">Custom Homes</a></li>
+          <li><a href="#">Virtual Tours</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Resources</div>
+        <ul class="footer-links">
+          <li><a href="#">What Is Modular?</a></li>
+          <li><a href="#">Financing Guide</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Biviano General Contracting. All rights reserved.</div>
+      <div class="footer-lic">Licensed · Bonded · Insured</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>

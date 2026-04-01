@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biviano Modular Builders — Luxury Precision-Built Homes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #4A90C4;
+    --blue-light: #6AAED8;
+    --blue-dark: #2E6A96;
+    --navy: #0C1824;
+    --navy-mid: #112233;
+    --navy-light: #1A3347;
+    --white: #FFFFFF;
+    --off-white: #F5F3EF;
+    --grey: #C4C4C4;
+    --grey-dark: #888;
+    --black: #0A0A0A;
+    --gold: #C9A96E;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--blue);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid rgba(74,144,196,0.5);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s ease, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* Architectural grid texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(74,144,196,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,144,196,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 60px;
+    height: 80px;
+    background: linear-gradient(to bottom, rgba(12,24,36,0.97), transparent);
+    border-bottom: 1px solid rgba(74,144,196,0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 44px; height: 44px;
+    position: relative;
+  }
+
+  /* SVG crest placeholder that mirrors the B shield logo */
+  .crest-svg {
+    width: 44px; height: 44px;
+  }
+
+  .nav-logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  .nav-logo-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+  .nav-logo-sub {
+    font-family: 'Jost', sans-serif;
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: var(--blue-light);
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 1px;
+    background: var(--blue);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: var(--blue);
+    padding: 12px 28px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .nav-cta:hover {
+    background: var(--blue-light);
+    transform: translateY(-1px);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(74,144,196,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 80% at 10% 80%, rgba(46,106,150,0.08) 0%, transparent 60%),
+      linear-gradient(135deg, #0C1824 0%, #112233 50%, #0C1824 100%);
+    z-index: 0;
+  }
+
+  /* Hero image panel — right side */
+  .hero-image-panel {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 52%;
+    overflow: hidden;
+  }
+  .hero-image-panel img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+    filter: saturate(0.7) contrast(1.1);
+  }
+  .hero-image-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--navy) 0%, rgba(12,24,36,0.3) 40%, transparent 100%);
+    z-index: 1;
+  }
+  .hero-image-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(12,24,36,0.4) 0%, transparent 30%, transparent 70%, rgba(12,24,36,0.5) 100%);
+    z-index: 1;
+  }
+
+  /* Diagonal accent line */
+  .hero-diagonal {
+    position: absolute;
+    top: 0; left: 46%;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(74,144,196,0.4) 30%, rgba(74,144,196,0.4) 70%, transparent);
+    transform: skewX(-3deg);
+    z-index: 2;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    padding: 0 60px;
+    max-width: 640px;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+  .hero-eyebrow-line {
+    width: 40px; height: 1px;
+    background: var(--blue);
+  }
+  .hero-eyebrow-text {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+  }
+
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 6vw, 82px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+  .hero-headline em {
+    font-style: italic;
+    color: var(--blue-light);
+  }
+
+  .hero-sub {
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--grey);
+    max-width: 440px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .btn-primary {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: var(--blue);
+    padding: 18px 40px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 32px rgba(74,144,196,0.25);
+  }
+  .btn-primary:hover {
+    background: var(--blue-light);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(74,144,196,0.4);
+  }
+
+  .btn-ghost {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: gap 0.3s ease, color 0.3s ease;
+  }
+  .btn-ghost:hover { gap: 20px; color: var(--blue-light); }
+  .btn-ghost-arrow {
+    width: 28px; height: 1px;
+    background: currentColor;
+    position: relative;
+  }
+  .btn-ghost-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0; top: -4px;
+    width: 8px; height: 8px;
+    border-right: 1px solid currentColor;
+    border-top: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  /* Hero stats bar */
+  .hero-stats {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    z-index: 10;
+    display: flex;
+    border-top: 1px solid rgba(74,144,196,0.15);
+    background: rgba(12,24,36,0.8);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    animation: fadeIn 0.8s ease 1.2s forwards;
+  }
+  .hero-stat {
+    flex: 1;
+    padding: 24px 40px;
+    border-right: 1px solid rgba(74,144,196,0.1);
+  }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--blue-light);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .hero-stat-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey-dark);
+  }
+
+  /* ── SECTION SHARED ── */
+  section { position: relative; z-index: 1; }
+
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .section-eyebrow-line {
+    width: 30px; height: 1px;
+    background: var(--blue);
+  }
+  .section-eyebrow-text {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--white);
+  }
+  .section-title em {
+    font-style: italic;
+    color: var(--blue-light);
+  }
+
+  /* ── WHAT IS MODULAR ── */
+  .modular-section {
+    padding: 120px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .modular-content { }
+
+  .modular-body {
+    font-family: 'Jost', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--grey);
+    margin-top: 28px;
+    margin-bottom: 48px;
+  }
+
+  .modular-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .modular-step {
+    display: flex;
+    gap: 28px;
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(74,144,196,0.1);
+    transition: background 0.3s ease;
+  }
+  .modular-step:first-child { border-top: 1px solid rgba(74,144,196,0.1); }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+    color: rgba(74,144,196,0.2);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 48px;
+    transition: color 0.3s ease;
+  }
+  .modular-step:hover .step-num { color: var(--blue); }
+  .step-content {}
+  .step-title {
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .step-desc {
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--grey-dark);
+  }
+
+  .modular-visual {
+    position: relative;
+  }
+  .modular-img-wrap {
+    position: relative;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+  }
+  .modular-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0.7) contrast(1.05);
+    transition: transform 0.8s ease;
+  }
+  .modular-img-wrap:hover img { transform: scale(1.03); }
+  .modular-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(12,24,36,0.7) 100%);
+  }
+
+  /* Floating badge */
+  .modular-badge {
+    position: absolute;
+    bottom: -24px;
+    left: -24px;
+    background: var(--blue);
+    padding: 28px 32px;
+    z-index: 2;
+  }
+  .modular-badge-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .modular-badge-text {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-top: 4px;
+  }
+
+  /* ── ADVANTAGES ── */
+  .advantages-section {
+    padding: 120px 60px;
+    background: var(--navy-mid);
+    position: relative;
+    overflow: hidden;
+  }
+  .advantages-section::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,144,196,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .advantages-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .advantages-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: end;
+    margin-bottom: 72px;
+  }
+  .advantages-body {
+    font-family: 'Jost', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--grey);
+    margin-top: 24px;
+  }
+
+  .advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(74,144,196,0.1);
+  }
+  .advantage-card {
+    background: var(--navy-mid);
+    padding: 48px 40px;
+    transition: background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .advantage-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--blue);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+    transform-origin: left;
+  }
+  .advantage-card:hover { background: var(--navy-light); }
+  .advantage-card:hover::before { transform: scaleX(1); }
+
+  .advantage-icon {
+    width: 48px; height: 48px;
+    margin-bottom: 28px;
+    color: var(--blue);
+  }
+  .advantage-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 14px;
+  }
+  .advantage-desc {
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--grey-dark);
+  }
+
+  /* ── FLOOR PLANS / HOMES ── */
+  .homes-section {
+    padding: 120px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .homes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 60px;
+  }
+  .homes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .home-card {
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+  }
+  .home-card-img {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+  }
+  .home-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0.6) contrast(1.1);
+    transition: transform 0.7s ease, filter 0.5s ease;
+  }
+  .home-card:hover .home-card-img img {
+    transform: scale(1.06);
+    filter: saturate(0.85) contrast(1.05);
+  }
+  .home-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(12,24,36,0.9) 0%, rgba(12,24,36,0.2) 50%, transparent 100%);
+    transition: background 0.4s ease;
+  }
+  .home-card:hover .home-card-overlay {
+    background: linear-gradient(to top, rgba(12,24,36,0.95) 0%, rgba(12,24,36,0.4) 60%, transparent 100%);
+  }
+  .home-card-content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 32px;
+  }
+  .home-card-tag {
+    font-family: 'Jost', sans-serif;
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 8px;
+  }
+  .home-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .home-card-specs {
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--grey);
+    margin-bottom: 20px;
+  }
+  .home-card-link {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .home-card:hover .home-card-link {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .home-card-link::after {
+    content: '→';
+  }
+
+  /* ── PROCESS ── */
+  .process-section {
+    padding: 120px 60px;
+    background: linear-gradient(to bottom, var(--navy-mid), var(--navy));
+    position: relative;
+    overflow: hidden;
+  }
+  .process-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .process-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .process-header .section-eyebrow {
+    justify-content: center;
+  }
+
+  .process-timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: relative;
+  }
+  .process-timeline::before {
+    content: '';
+    position: absolute;
+    top: 32px; left: 12.5%; right: 12.5%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(74,144,196,0.4) 20%, rgba(74,144,196,0.4) 80%, transparent);
+  }
+  .process-step {
+    padding: 0 24px;
+    text-align: center;
+  }
+  .process-step-dot {
+    width: 64px; height: 64px;
+    border: 1px solid rgba(74,144,196,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--blue-light);
+    background: var(--navy);
+    position: relative;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .process-step:hover .process-step-dot {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: var(--navy);
+  }
+  .process-step-title {
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .process-step-desc {
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--grey-dark);
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-section {
+    padding: 120px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 64px;
+  }
+  .testimonial-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(74,144,196,0.12);
+    padding: 44px 36px;
+    position: relative;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .testimonial-card:hover {
+    border-color: rgba(74,144,196,0.3);
+    background: rgba(74,144,196,0.04);
+  }
+  .testimonial-quote-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 80px;
+    font-weight: 300;
+    color: var(--blue);
+    opacity: 0.3;
+    line-height: 0.6;
+    margin-bottom: 20px;
+  }
+  .testimonial-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--off-white);
+    margin-bottom: 32px;
+  }
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .testimonial-author-line {
+    width: 24px; height: 1px;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+  .testimonial-author-info {}
+  .testimonial-name {
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+  .testimonial-location {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--grey-dark);
+    margin-top: 2px;
+  }
+  .testimonial-stars {
+    position: absolute;
+    top: 36px; right: 36px;
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  /* ── LEAD / CONSULTATION CTA ── */
+  .cta-section {
+    position: relative;
+    overflow: hidden;
+    background: var(--navy-mid);
+    border-top: 1px solid rgba(74,144,196,0.15);
+    border-bottom: 1px solid rgba(74,144,196,0.15);
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 100% at 50% 50%, rgba(74,144,196,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 120px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .cta-content {}
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 4vw, 60px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--white);
+    margin-top: 20px;
+    margin-bottom: 24px;
+  }
+  .cta-title em { font-style: italic; color: var(--blue-light); }
+  .cta-body {
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--grey);
+    margin-bottom: 40px;
+  }
+  .cta-form {
+    background: rgba(12,24,36,0.8);
+    border: 1px solid rgba(74,144,196,0.2);
+    padding: 48px;
+    backdrop-filter: blur(10px);
+  }
+  .form-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 32px;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-label {
+    display: block;
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey-dark);
+    margin-bottom: 8px;
+  }
+  .form-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(74,144,196,0.2);
+    color: var(--white);
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+    -webkit-appearance: none;
+  }
+  .form-input:focus {
+    border-color: var(--blue);
+    background: rgba(74,144,196,0.06);
+  }
+  .form-input::placeholder { color: rgba(196,196,196,0.3); }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .form-select {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(74,144,196,0.2);
+    color: var(--grey);
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    -webkit-appearance: none;
+    cursor: none;
+  }
+  .form-select:focus { border-color: var(--blue); }
+  .form-select option { background: var(--navy); }
+  .form-submit {
+    width: 100%;
+    background: var(--blue);
+    color: var(--navy);
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 20px;
+    border: none;
+    cursor: none;
+    margin-top: 8px;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 32px rgba(74,144,196,0.2);
+  }
+  .form-submit:hover {
+    background: var(--blue-light);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 40px rgba(74,144,196,0.35);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 72px 60px 40px;
+    border-top: 1px solid rgba(74,144,196,0.1);
+    background: var(--navy);
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .footer-brand {}
+  .footer-logo-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .footer-logo-sub {
+    font-family: 'Jost', sans-serif;
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: var(--blue-light);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .footer-tagline {
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--grey-dark);
+    max-width: 280px;
+  }
+  .footer-col-title {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 20px;
+  }
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-links a {
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--grey-dark);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .footer-links a:hover { color: var(--blue-light); }
+
+  .footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+    border-top: 1px solid rgba(74,144,196,0.08);
+  }
+  .footer-copyright {
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(136,136,136,0.5);
+    letter-spacing: 0.05em;
+  }
+  .footer-license {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(74,144,196,0.4);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* Divider */
+  .divider {
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, rgba(74,144,196,0.4), transparent);
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <!-- Biviano Crest SVG (rendered inline, matching the winged B shield) -->
+    <svg class="crest-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Wings left -->
+      <path d="M2 18 C4 12, 8 10, 11 14 L13 17 C10 14, 6 15, 4 20 Z" fill="#4A90C4" opacity="0.7"/>
+      <path d="M1 21 C3 15, 7 13, 10 17 L12 20 C9 17, 5 18, 3 23 Z" fill="#4A90C4" opacity="0.5"/>
+      <path d="M3 25 C5 19, 9 17, 12 21 L13 23 C10 20, 6 21, 5 26 Z" fill="#4A90C4" opacity="0.35"/>
+      <!-- Wings right -->
+      <path d="M42 18 C40 12, 36 10, 33 14 L31 17 C34 14, 38 15, 40 20 Z" fill="#4A90C4" opacity="0.7"/>
+      <path d="M43 21 C41 15, 37 13, 34 17 L32 20 C35 17, 39 18, 41 23 Z" fill="#4A90C4" opacity="0.5"/>
+      <path d="M41 25 C39 19, 35 17, 32 21 L31 23 C34 20, 38 21, 39 26 Z" fill="#4A90C4" opacity="0.35"/>
+      <!-- Shield -->
+      <path d="M13 11 L22 8 L31 11 L31 26 C31 31, 22 36, 22 36 C22 36, 13 31, 13 26 Z" fill="#1A3347" stroke="#4A90C4" stroke-width="0.8"/>
+      <!-- B letter -->
+      <text x="22" y="27" text-anchor="middle" font-family="serif" font-size="14" font-weight="bold" fill="#4A90C4">B</text>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Biviano</span>
+      <span class="nav-logo-sub">Modular Builders</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#what-is-modular">What Is Modular</a></li>
+    <li><a href="#advantages">Why Biviano</a></li>
+    <li><a href="#homes">Floor Plans</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#testimonials">Stories</a></li>
+  </ul>
+
+  <a href="#consultation" class="nav-cta">Begin Your Build</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Hero image (right panel) -->
+  <div class="hero-image-panel">
+    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80&auto=format&fit=crop" alt="Luxury modular home exterior">
+  </div>
+  <div class="hero-diagonal"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="hero-eyebrow-text">Precision-Crafted Living</span>
+    </div>
+
+    <h1 class="hero-headline">
+      The Home You<br>
+      <em>Envisioned</em>,<br>
+      Built to Endure.
+    </h1>
+
+    <p class="hero-sub">
+      Biviano Modular Builders delivers bespoke, luxury precision-built homes — 
+      engineered in a controlled environment and assembled on your land with 
+      uncompromising quality and speed.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#consultation" class="btn-primary">Schedule a Consultation</a>
+      <a href="#homes" class="btn-ghost">
+        View Floor Plans
+        <span class="btn-ghost-arrow"></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">60%</div>
+      <div class="hero-stat-label">Faster Than Traditional Build</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">200+</div>
+      <div class="hero-stat-label">Homes Completed</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">25yr</div>
+      <div class="hero-stat-label">Industry Experience</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">98%</div>
+      <div class="hero-stat-label">Client Satisfaction Rate</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT IS MODULAR ── -->
+<section id="what-is-modular">
+  <div class="modular-section">
+    <div class="modular-content">
+      <div class="section-eyebrow reveal">
+        <div class="section-eyebrow-line"></div>
+        <span class="section-eyebrow-text">What Is Modular Construction</span>
+      </div>
+      <h2 class="section-title reveal reveal-delay-1">
+        A Smarter Way<br>to Build <em>Beautifully</em>
+      </h2>
+      <p class="modular-body reveal reveal-delay-2">
+        Modular homes are precision-built in sections inside a climate-controlled factory, 
+        then transported and assembled on your permanent foundation — meeting or exceeding 
+        every local and state building code. The result: superior craftsmanship, less 
+        weather exposure, less waste, and a faster path to the home you've always imagined.
+      </p>
+
+      <div class="modular-steps">
+        <div class="modular-step reveal reveal-delay-2">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <div class="step-title">Factory-Built Precision</div>
+            <div class="step-desc">Every module is constructed indoors by skilled craftspeople, eliminating weather delays and ensuring consistent quality control unavailable on a traditional job site.</div>
+          </div>
+        </div>
+        <div class="modular-step reveal reveal-delay-3">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <div class="step-title">Code-Compliant by Design</div>
+            <div class="step-desc">Modular homes meet the same local, state, and regional building codes as site-built homes — and are often inspected multiple times throughout construction.</div>
+          </div>
+        </div>
+        <div class="modular-step reveal reveal-delay-4">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <div class="step-title">Permanent Foundation</div>
+            <div class="step-desc">Assembled on a traditional permanent foundation on your land, a Biviano home appreciates in value just like any custom site-built residence.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modular-visual reveal reveal-delay-2">
+      <div class="modular-img-wrap">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&auto=format&fit=crop" alt="Luxury home interior">
+      </div>
+      <div class="modular-badge">
+        <div class="modular-badge-num">30%</div>
+        <div class="modular-badge-text">Less Waste<br>Than Site-Built</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ADVANTAGES ── -->
+<section id="advantages" class="advantages-section">
+  <div class="advantages-inner">
+    <div class="advantages-header">
+      <div>
+        <div class="section-eyebrow reveal">
+          <div class="section-eyebrow-line"></div>
+          <span class="section-eyebrow-text">The Biviano Difference</span>
+        </div>
+        <h2 class="section-title reveal reveal-delay-1">
+          Why Discerning Buyers<br>Choose <em>Biviano</em>
+        </h2>
+      </div>
+      <p class="advantages-body reveal reveal-delay-2">
+        We don't build cookie-cutter homes. Every Biviano residence begins with your vision 
+        and ends with a landmark — a home built to luxury standards, delivered with 
+        remarkable efficiency.
+      </p>
+    </div>
+
+    <div class="advantages-grid">
+      <div class="advantage-card reveal">
+        <svg class="advantage-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="8" y="8" width="32" height="32" rx="1"/>
+          <path d="M16 24h16M24 16v16"/>
+          <path d="M8 16h4M36 16h4M8 32h4M36 32h4"/>
+        </svg>
+        <div class="advantage-title">Fully Custom Design</div>
+        <div class="advantage-desc">Work directly with our design team to create floor plans, elevations, and interior selections that are entirely your own. Nothing is off the shelf.</div>
+      </div>
+      <div class="advantage-card reveal reveal-delay-1">
+        <svg class="advantage-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="24" cy="24" r="16"/>
+          <path d="M24 12v12l8 4"/>
+        </svg>
+        <div class="advantage-title">60% Faster Delivery</div>
+        <div class="advantage-desc">Because construction happens simultaneously with site preparation, your home is ready in a fraction of the time a traditional build requires.</div>
+      </div>
+      <div class="advantage-card reveal reveal-delay-2">
+        <svg class="advantage-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M24 8L8 16v16c0 8 16 16 16 16s16-8 16-16V16L24 8z"/>
+          <path d="M17 24l5 5 9-10"/>
+        </svg>
+        <div class="advantage-title">Superior Quality Control</div>
+        <div class="advantage-desc">Factory construction means each component is inspected at every stage — no rain damage, no subcontractor variability, no compromises.</div>
+      </div>
+      <div class="advantage-card reveal reveal-delay-1">
+        <svg class="advantage-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M8 36L24 12l16 24H8z"/>
+          <path d="M16 36V24M32 36V24M24 36V18"/>
+        </svg>
+        <div class="advantage-title">Energy Efficiency</div>
+        <div class="advantage-desc">Tighter construction tolerances and advanced insulation systems mean Biviano homes consistently outperform site-built homes on energy consumption.</div>
+      </div>
+      <div class="advantage-card reveal reveal-delay-2">
+        <svg class="advantage-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="24" cy="20" r="8"/>
+          <path d="M12 40c0-6.627 5.373-12 12-12s12 5.373 12 12"/>
+        </svg>
+        <div class="advantage-title">Dedicated Project Team</div>
+        <div class="advantage-desc">A senior project manager guides you from first sketch to final walkthrough. One point of contact. Complete transparency. No surprises.</div>
+      </div>
+      <div class="advantage-card reveal reveal-delay-3">
+        <svg class="advantage-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="8" y="16" width="32" height="24" rx="1"/>
+          <path d="M16 16V12a8 8 0 0116 0v4"/>
+          <circle cx="24" cy="28" r="3"/>
+        </svg>
+        <div class="advantage-title">Fixed-Price Contracts</div>
+        <div class="advantage-desc">No cost creep. No change-order surprises. Your Biviano contract guarantees the price, the timeline, and the result — before a single nail is driven.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FLOOR PLANS ── -->
+<section id="homes" class="homes-section">
+  <div class="homes-header reveal">
+    <div>
+      <div class="section-eyebrow">
+        <div class="section-eyebrow-line"></div>
+        <span class="section-eyebrow-text">Our Residences</span>
+      </div>
+      <h2 class="section-title">Signature <em>Collections</em></h2>
+    </div>
+    <a href="#" class="btn-ghost" style="color: var(--grey);">
+      View All Floor Plans
+      <span class="btn-ghost-arrow"></span>
+    </a>
+  </div>
+
+  <div class="homes-grid">
+    <div class="home-card reveal">
+      <div class="home-card-img">
+        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=700&q=80&auto=format&fit=crop" alt="The Ashford">
+      </div>
+      <div class="home-card-overlay"></div>
+      <div class="home-card-content">
+        <div class="home-card-tag">Single Story</div>
+        <div class="home-card-name">The Ashford</div>
+        <div class="home-card-specs">3 Bed · 2 Bath · 2,200 sq ft</div>
+        <a href="#" class="home-card-link">Explore Floor Plan</a>
+      </div>
+    </div>
+    <div class="home-card reveal reveal-delay-2">
+      <div class="home-card-img">
+        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=700&q=80&auto=format&fit=crop" alt="The Meridian">
+      </div>
+      <div class="home-card-overlay"></div>
+      <div class="home-card-content">
+        <div class="home-card-tag">Two Story · Signature</div>
+        <div class="home-card-name">The Meridian</div>
+        <div class="home-card-specs">4 Bed · 3.5 Bath · 3,800 sq ft</div>
+        <a href="#" class="home-card-link">Explore Floor Plan</a>
+      </div>
+    </div>
+    <div class="home-card reveal reveal-delay-3">
+      <div class="home-card-img">
+        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=700&q=80&auto=format&fit=crop" alt="The Pinnacle">
+      </div>
+      <div class="home-card-overlay"></div>
+      <div class="home-card-content">
+        <div class="home-card-tag">Estate · Custom</div>
+        <div class="home-card-name">The Pinnacle</div>
+        <div class="home-card-specs">5 Bed · 4.5 Bath · 5,200+ sq ft</div>
+        <a href="#" class="home-card-link">Explore Floor Plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESS ── -->
+<section id="process" class="process-section">
+  <div class="process-inner">
+    <div class="process-header">
+      <div class="section-eyebrow reveal" style="justify-content:center;">
+        <div class="section-eyebrow-line"></div>
+        <span class="section-eyebrow-text">How It Works</span>
+      </div>
+      <h2 class="section-title reveal reveal-delay-1" style="margin-top:16px;">
+        Your Path From<br><em>Vision to Keys</em>
+      </h2>
+    </div>
+
+    <div class="process-timeline">
+      <div class="process-step reveal">
+        <div class="process-step-dot">01</div>
+        <div class="process-step-title">Consultation</div>
+        <div class="process-step-desc">We learn your vision, land, budget, and timeline. You meet the team who will build your home.</div>
+      </div>
+      <div class="process-step reveal reveal-delay-1">
+        <div class="process-step-dot">02</div>
+        <div class="process-step-title">Design & Plans</div>
+        <div class="process-step-desc">Our designers develop your floor plan, elevations, and interior selections — refined until perfect.</div>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="process-step-dot">03</div>
+        <div class="process-step-title">Factory Build</div>
+        <div class="process-step-desc">Your home is precision-built in our climate-controlled facility while your site is prepared simultaneously.</div>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="process-step-dot">04</div>
+        <div class="process-step-title">Delivery & Set</div>
+        <div class="process-step-desc">Modules arrive on-site and are assembled on your permanent foundation. Move-in ready in weeks, not years.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials" class="testimonials-section">
+  <div class="section-eyebrow reveal">
+    <div class="section-eyebrow-line"></div>
+    <span class="section-eyebrow-text">Client Stories</span>
+  </div>
+  <h2 class="section-title reveal reveal-delay-1" style="margin-top:16px;">
+    Homes That <em>Changed</em><br>Everything
+  </h2>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-quote-mark">"</div>
+      <p class="testimonial-text">We toured a dozen builders before finding Biviano. The difference in quality and professionalism was immediately obvious. Our home was everything we designed — and it was done in four months.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-author-line"></div>
+        <div class="testimonial-author-info">
+          <div class="testimonial-name">Robert & Christine Mercer</div>
+          <div class="testimonial-location">Ashford Estate — Scottsdale, AZ</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-1">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-quote-mark">"</div>
+      <p class="testimonial-text">The fixed-price contract was a game changer. We knew exactly what we were getting and exactly what we'd pay. No surprises. Just a stunning home on budget and on time.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-author-line"></div>
+        <div class="testimonial-author-info">
+          <div class="testimonial-name">James Holloway</div>
+          <div class="testimonial-location">The Meridian — Denver, CO</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-2">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-quote-mark">"</div>
+      <p class="testimonial-text">I'm an architect. I was skeptical modular could meet my standards. Biviano didn't just meet them — the craftsmanship inside those modules was better than anything I'd seen on a job site.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-author-line"></div>
+        <div class="testimonial-author-info">
+          <div class="testimonial-name">Diana Park, AIA</div>
+          <div class="testimonial-location">Custom Design — Portland, OR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONSULTATION CTA ── -->
+<section id="consultation" class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-content reveal">
+      <div class="section-eyebrow">
+        <div class="section-eyebrow-line"></div>
+        <span class="section-eyebrow-text">Begin Your Build</span>
+      </div>
+      <h2 class="cta-title">
+        Let's Build Your<br><em>Landmark</em> Home
+      </h2>
+      <p class="cta-body">
+        Your first consultation with Biviano is complimentary. We'll discuss your vision, 
+        your land, your timeline, and your budget — and show you exactly what's possible. 
+        No pressure. No obligation. Just the beginning of something exceptional.
+      </p>
+      <div style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey-dark);margin-bottom:6px;">Call Us Directly</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--white);">(800) 248-2664</div>
+        </div>
+        <div style="width:1px;height:40px;background:rgba(74,144,196,0.2);"></div>
+        <div>
+          <div style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey-dark);margin-bottom:6px;">Email Us</div>
+          <div style="font-family:'Jost',sans-serif;font-size:14px;font-weight:300;color:var(--blue-light);">build@biviano.com</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-form reveal reveal-delay-2">
+      <div class="form-title">Request a Free Consultation</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-input" placeholder="Robert">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-input" placeholder="Mercer">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="robert@email.com">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-input" placeholder="(555) 000-0000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Home Size Interest</label>
+          <select class="form-select">
+            <option value="">Select range...</option>
+            <option>Under 2,000 sq ft</option>
+            <option>2,000 – 3,500 sq ft</option>
+            <option>3,500 – 5,000 sq ft</option>
+            <option>5,000+ sq ft Custom Estate</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tell Us About Your Project</label>
+        <textarea class="form-input" rows="3" placeholder="Land location, style preferences, timeline..." style="resize:none;"></textarea>
+      </div>
+      <button class="form-submit">Schedule My Free Consultation →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo-name">Biviano</div>
+      <div class="footer-logo-sub">Modular Builders</div>
+      <p class="footer-tagline">Precision-crafted, luxury modular homes built to your vision — faster, smarter, and built to last generations.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Process</a></li>
+        <li><a href="#">The Biviano Standard</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Residences</div>
+      <ul class="footer-links">
+        <li><a href="#">Floor Plans</a></li>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">Custom Homes</a></li>
+        <li><a href="#">ADU & Guest Homes</a></li>
+        <li><a href="#">Virtual Tours</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Resources</div>
+      <ul class="footer-links">
+        <li><a href="#">What Is Modular?</a></li>
+        <li><a href="#">Financing Guide</a></li>
+        <li><a href="#">Site Preparation</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-copyright">© 2025 Biviano General Contracting. All rights reserved.</div>
+    <div class="footer-license">Licensed · Bonded · Insured</div>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  // Smooth ring follow
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Cursor expand on hover
+  document.querySelectorAll('a, button, .home-card, .advantage-card, .testimonial-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '16px';
+      cursor.style.height = '16px';
+      cursorRing.style.width = '56px';
+      cursorRing.style.height = '56px';
+      cursorRing.style.borderColor = 'rgba(74,144,196,0.8)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '8px';
+      cursor.style.height = '8px';
+      cursorRing.style.width = '32px';
+      cursorRing.style.height = '32px';
+      cursorRing.style.borderColor = 'rgba(74,144,196,0.5)';
+    });
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // Nav background on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      nav.style.background = 'rgba(12,24,36,0.97)';
+      nav.style.borderBottomColor = 'rgba(74,144,196,0.15)';
+    } else {
+      nav.style.background = 'linear-gradient(to bottom, rgba(12,24,36,0.97), transparent)';
+      nav.style.borderBottomColor = 'rgba(74,144,196,0.1)';
+    }
+  });
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
